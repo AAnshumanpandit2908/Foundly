@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeProvider } from 'next-themes';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
@@ -13,6 +14,7 @@ import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/public/LoginPage';
 import { SignupPage } from './pages/public/SignupPage';
 import { AdminApplicationPage } from './pages/public/AdminApplicationPage';
+import ThemeDemoPage from './pages/public/ThemeDemoPage';
 
 // Student pages
 import { StudentDashboard } from './pages/student/StudentDashboard';
@@ -70,6 +72,8 @@ const AppContent: React.FC = () => {
         return <SignupPage />;
       case '/admin-application':
         return <AdminApplicationPage />;
+      case '/demo':
+        return <ThemeDemoPage />;
 
       // Protected Student routes (/student/*)
       case '/student':
@@ -261,7 +265,7 @@ const AppContent: React.FC = () => {
     currentPath === '/admin-application';
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#121212] text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-300">
       {/* Role Switcher Toolbar for Phase 2 UI & Permission Verification */}
       <RoleSwitcherBanner />
 
@@ -307,14 +311,16 @@ const AppContent: React.FC = () => {
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <NotificationProvider>
-          <RouterProvider>
-            <AppContent />
-          </RouterProvider>
-        </NotificationProvider>
-      </AuthProvider>
-    </ToastProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ToastProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <RouterProvider>
+              <AppContent />
+            </RouterProvider>
+          </NotificationProvider>
+        </AuthProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

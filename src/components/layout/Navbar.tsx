@@ -20,6 +20,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
 import { Button } from '../ui/Button';
 import { PilotFeedbackModal } from '../ui/PilotFeedbackModal';
+import CinematicThemeSwitcher from '../ui/cinematic-theme-switcher';
 
 export const Navbar: React.FC = () => {
   const { currentPath, navigate, perspective, setPerspective } = useRouter();
@@ -47,7 +48,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
@@ -59,10 +60,10 @@ export const Navbar: React.FC = () => {
               <Compass className="w-5 h-5 transition-transform group-hover:rotate-12" />
             </div>
             <div>
-              <span className="text-lg font-bold tracking-tight text-slate-900 block leading-none">
+              <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white block leading-none transition-colors">
                 FOUNDLY
               </span>
-              <span className="text-[10px] font-medium text-slate-400 tracking-wider uppercase block mt-0.5">
+              <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 tracking-wider uppercase block mt-0.5">
                 Lost & Found
               </span>
             </div>
@@ -214,6 +215,11 @@ export const Navbar: React.FC = () => {
 
         {/* Right side controls */}
         <div className="flex items-center gap-2.5">
+          {/* Theme Toggle */}
+          <div className="hidden sm:block scale-[0.6] origin-right mr-1 -ml-2">
+            <CinematicThemeSwitcher />
+          </div>
+
           {/* Pilot Feedback Trigger */}
           <button
             onClick={() => setIsFeedbackModalOpen(true)}

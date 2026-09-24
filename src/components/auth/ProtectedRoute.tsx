@@ -32,13 +32,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, ch
   if (!user) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-white border border-slate-200/80 rounded-3xl p-8 text-center shadow-xs space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200/60 text-indigo-600 flex items-center justify-center mx-auto">
+        <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-8 text-center shadow-xs space-y-4 transition-colors">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-900/50 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto transition-colors">
             <LogIn className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Authentication Required</h2>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors">Authentication Required</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed transition-colors">
               Please sign in with your campus account to access this section of Foundly.
             </p>
           </div>
@@ -90,13 +90,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, ch
     if (isSuspended && allowedRoles.includes('college_admin') && !allowedRoles.includes('student')) {
       return (
         <div className="min-h-[60vh] flex items-center justify-center p-6" id="suspended-admin-denied-view">
-          <div className="w-full max-w-md bg-white border border-rose-200/80 rounded-3xl p-8 text-center shadow-xs space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto">
+          <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-rose-200/80 dark:border-rose-900/50 rounded-3xl p-8 text-center shadow-xs space-y-4 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto transition-colors">
               <ShieldAlert className="w-6 h-6" />
             </div>
             <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 tracking-tight">Account Suspended</h2>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors">Account Suspended</h2>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed transition-colors">
                 Your College Administrator account has been suspended by the platform owner. Access to the Admin Panel is blocked.
               </p>
             </div>
@@ -120,13 +120,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, ch
 
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-white border border-rose-200/80 rounded-3xl p-8 text-center shadow-xs space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto">
+        <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-rose-200/80 dark:border-rose-900/50 rounded-3xl p-8 text-center shadow-xs space-y-4 transition-colors">
+          <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto transition-colors">
             <ShieldAlert className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Access Denied</h2>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight transition-colors">Access Denied</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed transition-colors">
               {isTargetingOwner
                 ? 'This area requires Foundly Platform Owner authorization.'
                 : isTargetingAdmin

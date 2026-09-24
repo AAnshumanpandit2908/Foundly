@@ -8,6 +8,7 @@ import { User, Mail, Lock, Building2, UserPlus, CheckCircle2, AlertCircle, Refre
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
+import { PasswordStrength } from '../../components/ui/password-strength';
 
 export const SignupPage: React.FC = () => {
   const { navigate } = useRouter();
@@ -236,6 +237,9 @@ export const SignupPage: React.FC = () => {
                 requiredIndicator
               />
             </div>
+            {password && (
+              <PasswordStrength value={password} className="mt-1" showRules={true} />
+            )}
 
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px] text-slate-500 flex items-start gap-2">
               <Building2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />

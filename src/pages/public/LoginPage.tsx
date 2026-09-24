@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Mail, Lock, LogIn, AlertCircle } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { PasswordStrength } from '../../components/ui/password-strength';
 
 export const LoginPage: React.FC = () => {
   const { navigate } = useRouter();
@@ -108,6 +109,9 @@ export const LoginPage: React.FC = () => {
             leftIcon={<Lock className="w-4 h-4" />}
             requiredIndicator
           />
+          {password && (
+            <PasswordStrength value={password} className="mt-1" showRules={false} />
+          )}
 
           <Button
             type="submit"

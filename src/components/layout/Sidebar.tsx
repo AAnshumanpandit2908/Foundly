@@ -79,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   };
 
   return (
-    <div className="flex flex-col w-full rounded-3xl border border-slate-200/80 bg-white p-4 shadow-xs">
+    <div className="flex flex-col w-full rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 shadow-xs transition-colors">
       <div className="space-y-4">
         <div>
           <p className="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
@@ -94,11 +94,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
                   onClick={() => navigate(link.path)}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-colors text-left ${
                     isActive
-                      ? 'bg-indigo-50 text-indigo-700 font-semibold shadow-xs'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 font-semibold shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
-                  <span className={isActive ? 'text-indigo-600' : 'text-slate-400'}>
+                  <span className={isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 dark:text-slate-500'}>
                     {link.icon}
                   </span>
                   <span>{link.label}</span>
@@ -109,10 +109,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
         </div>
       </div>
 
-      <div className="pt-4 mt-4 border-t border-slate-100">
+      <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 transition-colors">
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 hover:bg-rose-50 hover:text-rose-700 transition"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:text-rose-700 dark:hover:text-rose-400 transition-colors"
         >
           <LogOut className="w-4 h-4 text-slate-400" />
           <span>{user ? 'Sign Out' : 'Exit to Public'}</span>
