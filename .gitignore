@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+.vscode
+node_modules
+.env
+.env.local
+dist

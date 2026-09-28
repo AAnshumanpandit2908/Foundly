@@ -1,39 +1,51 @@
-import React from "react";
-import { 
-  ArrowRight, 
-  Play, 
-  Target, 
-  Crown, 
-  Star,
-  // Brand Icons
-  Hexagon,
-  Triangle,
-  Command,
-  Ghost,
-  Gem,
-  Cpu
-} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { ArrowRight, ShieldCheck, Sparkles, ChevronRight } from "lucide-react";
 
-// --- MOCK BRANDS ---
-// Replaced PNGs with Lucide icons to simulate tech logos
-const CLIENTS = [
-  { name: "Acme Corp", icon: Hexagon },
-  { name: "Quantum", icon: Triangle },
-  { name: "Command+Z", icon: Command },
-  { name: "Phantom", icon: Ghost },
-  { name: "Ruby", icon: Gem },
-  { name: "Chipset", icon: Cpu },
-];
+const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
+  const [count, setCount] = useState(0);
 
-// --- SUB-COMPONENTS ---
-const StatItem = ({ value, label }: { value: string; label: string }) => (
-  <div className="flex flex-col items-center justify-center transition-transform hover:-translate-y-1 cursor-default">
-    <span className="text-xl font-bold text-white sm:text-2xl">{value}</span>
-    <span className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium sm:text-xs">{label}</span>
-  </div>
-);
+  useEffect(() => {
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [end, duration]);
 
-// --- MAIN COMPONENT ---
+  return <span>{count}{suffix}</span>;
+};
+
+const CollegeMarquee = () => {
+  const colleges = ["Stanford University", "MIT", "Harvard", "UC Berkeley", "Oxford", "Cambridge"];
+  return (
+    <div className="w-full overflow-hidden flex flex-col items-center mt-12 py-6 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-transparent to-zinc-950 z-10 pointer-events-none"></div>
+      <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold mb-4 z-20">Trusted by top campuses globally</p>
+      <div className="w-full flex">
+        <div className="flex animate-marquee whitespace-nowrap z-20">
+          {[...colleges, ...colleges].map((college, i) => (
+            <span key={i} className="mx-8 text-xl font-bold text-white/40 tracking-tight">{college}</span>
+          ))}
+        </div>
+      </div>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
 export default function HeroSection({
   onReportLost,
   onReportFound,
@@ -44,195 +56,108 @@ export default function HeroSection({
   onBrowse?: () => void;
 }) {
   return (
-    <div className="relative w-full bg-zinc-950 text-white overflow-hidden font-sans rounded-3xl my-4">
-      {/* 
-        SCOPED ANIMATIONS 
-      */}
-      <style>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .animate-fade-in {
-          animation: fadeSlideIn 0.8s ease-out forwards;
-          opacity: 0;
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite; /* Slower for readability */
-        }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
-      `}</style>
+    <div className="relative w-full text-white font-sans flex flex-col items-center pt-24 pb-12 z-10 min-h-screen">
+      
+      {/* Badge */}
+      <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-md mb-8 animate-fade-in-up">
+        <Sparkles className="w-4 h-4 text-indigo-400" />
+        <span className="text-xs font-bold uppercase tracking-widest text-indigo-200">
+          CAMPUS-EXCLUSIVE LOST & FOUND
+        </span>
+      </div>
 
-      {/* Background Image with Gradient Mask */}
-      <div 
-        className="absolute inset-0 z-0 bg-[url(https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80)] bg-cover bg-center opacity-30"
-        style={{
-          maskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
-          WebkitMaskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
-        }}
-      />
+      {/* Heading */}
+      <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-center max-w-4xl leading-[1.1] mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+        Helping Lost Items Find Their <br className="hidden md:block"/>
+        <span className="bg-gradient-to-r from-indigo-400 to-amber-400 bg-clip-text text-transparent drop-shadow-sm">
+          Way Back Home
+        </span>
+      </h1>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-16 pb-12 sm:px-6 md:pt-20 md:pb-16 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8 items-start">
-          
-          {/* --- LEFT COLUMN --- */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-6 pt-4">
-            
-            {/* Badge */}
-            <div className="animate-fade-in delay-100">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-md transition-colors hover:bg-white/10">
-                <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
-                  Campus-Exclusive Lost & Found
-                  <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                </span>
-              </div>
-            </div>
+      {/* Subtext */}
+      <p className="text-lg text-zinc-400 text-center max-w-2xl mb-10 leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        A secure, intelligent platform dedicated to college communities. Report, match, and recover your lost belongings with ease.
+      </p>
 
-            {/* Heading */}
-            <h1 
-              className="animate-fade-in delay-200 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tighter leading-[0.95]"
-              style={{
-                maskImage: "linear-gradient(180deg, black 0%, black 80%, transparent 100%)",
-                WebkitMaskImage: "linear-gradient(180deg, black 0%, black 80%, transparent 100%)"
-              }}
-            >
-              Helping Lost Items<br />
-              <span className="bg-gradient-to-br from-white via-white to-[#ffcd75] bg-clip-text text-transparent">
-                Find Their Way
-              </span><br />
-              Back Home
-            </h1>
+      {/* Buttons */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-20 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+        <button 
+          onClick={onReportLost}
+          className="group relative px-6 py-3 text-sm font-bold text-zinc-900 bg-white rounded-full transition-all hover:scale-105"
+        >
+          <div className="absolute inset-0 rounded-full bg-white opacity-100 group-hover:opacity-0 transition-opacity"></div>
+          <div className="absolute inset-0 rounded-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_20px_rgba(99,102,241,0.6)]"></div>
+          <span className="relative z-10 group-hover:text-white transition-colors flex items-center gap-2">
+            Report Lost Item <ChevronRight className="w-4 h-4" />
+          </span>
+        </button>
+        
+        <button 
+          onClick={onReportFound}
+          className="px-6 py-3 text-sm font-bold text-white bg-white/5 border border-white/10 rounded-full backdrop-blur-md transition-all hover:bg-white/10 hover:scale-105 flex items-center gap-2"
+        >
+          Report Found Item
+        </button>
 
-            {/* Description */}
-            <p className="animate-fade-in delay-300 max-w-xl text-base sm:text-lg text-zinc-400 leading-relaxed">
-              A modern, private lost-and-found hub built strictly for your college campus. Report missing items, match records instantly, and safely claim what is yours.
-            </p>
+        <button 
+          onClick={onBrowse}
+          className="px-6 py-3 text-sm font-semibold text-zinc-300 hover:text-white transition-colors underline decoration-white/30 hover:decoration-white underline-offset-4"
+        >
+          Browse Items
+        </button>
+      </div>
 
-            {/* CTA Buttons */}
-            <div className="animate-fade-in delay-400 flex flex-wrap gap-4 pt-2">
-              <button 
-                onClick={onReportLost}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-zinc-950 transition-all hover:scale-[1.02] hover:bg-zinc-200 active:scale-[0.98] cursor-pointer"
-              >
-                Report Lost Item
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-              
-              <button 
-                onClick={onReportFound}
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 hover:border-white/20 cursor-pointer"
-              >
-                Report Found Item
-              </button>
-
-              <button 
-                onClick={onBrowse}
-                className="group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-7 py-3.5 text-sm font-semibold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-white/10 hover:text-white hover:border-white/20 cursor-pointer"
-              >
-                Browse Items
-              </button>
-            </div>
+      {/* Glass Stats Panel (2x2 grid) */}
+      <div className="w-full max-w-3xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <div className="grid grid-cols-2 gap-px bg-white/10 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-xl shadow-2xl">
+          {/* Tile 1 */}
+          <div className="bg-zinc-950/80 p-8 flex flex-col items-center justify-center text-center">
+            <div className="text-4xl md:text-5xl font-black text-white mb-2"><Counter end={500} suffix="+" /></div>
+            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">Items Reunited</div>
           </div>
-
-          {/* --- RIGHT COLUMN --- */}
-          <div className="lg:col-span-5 space-y-6 lg:mt-6">
-            
-            {/* Stats Card */}
-            <div className="animate-fade-in delay-500 relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl shadow-2xl">
-              {/* Card Glow Effect */}
-              <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
-                    <Target className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold tracking-tight text-white">500+</div>
-                    <div className="text-sm text-zinc-400">Items Reunited</div>
-                  </div>
-                </div>
-
-                {/* Progress Bar Section */}
-                <div className="space-y-3 mb-8">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-400">Recovery Rate</span>
-                    <span className="text-white font-medium">96%</span>
-                  </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800/50">
-                    <div className="h-full w-[96%] rounded-full bg-gradient-to-r from-white to-zinc-400" />
-                  </div>
-                </div>
-
-                <div className="h-px w-full bg-white/10 mb-6" />
-
-                {/* Mini Stats Grid */}
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <StatItem value="100%" label="Verified" />
-                  <div className="w-px h-full bg-white/10 mx-auto" />
-                  <StatItem value="Instant" label="AI Match" />
-                  <div className="w-px h-full bg-white/10 mx-auto" />
-                  <StatItem value="Safe" label="Handover" />
-                </div>
-
-                {/* Tag Pills */}
-                <div className="mt-8 flex flex-wrap gap-2">
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium tracking-wide text-zinc-300">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    CAMPUS ACTIVE
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium tracking-wide text-zinc-300">
-                    <Crown className="w-3 h-3 text-yellow-500" />
-                    TRUSTED
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Marquee Card */}
-            <div className="animate-fade-in delay-500 relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 py-6 backdrop-blur-xl">
-              <h3 className="mb-4 px-8 text-xs font-medium uppercase tracking-wider text-zinc-400">Protected & Verified Campuses</h3>
-              
-              <div 
-                className="relative flex overflow-hidden"
-                style={{
-                  maskImage: "linear-gradient(to right, transparent, black 20%, black 80%, transparent)",
-                  WebkitMaskImage: "linear-gradient(to right, transparent, black 20%, black 80%, transparent)"
-                }}
-              >
-                <div className="animate-marquee flex gap-12 whitespace-nowrap px-4">
-                  {/* Triple list for seamless loop */}
-                  {[...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-                    <div 
-                      key={i}
-                      className="flex items-center gap-2 opacity-50 transition-all hover:opacity-100 hover:scale-105 cursor-default grayscale hover:grayscale-0"
-                    >
-                      {/* Brand Icon */}
-                      <client.icon className="h-5 w-5 text-white fill-current" />
-                      {/* Brand Name */}
-                      <span className="text-sm font-bold text-white tracking-tight">
-                        {client.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
+          {/* Tile 2 */}
+          <div className="bg-zinc-950/80 p-8 flex flex-col items-center justify-center text-center relative group">
+            <svg className="absolute w-24 h-24 -rotate-90 opacity-20 group-hover:opacity-100 transition-opacity duration-1000">
+              <circle cx="48" cy="48" r="44" stroke="currentColor" strokeWidth="2" fill="none" className="text-indigo-500" strokeDasharray="276" strokeDashoffset="11" />
+            </svg>
+            <div className="text-4xl md:text-5xl font-black text-white mb-2 relative z-10"><Counter end={96} suffix="%" /></div>
+            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold relative z-10">Recovery Rate</div>
+          </div>
+          {/* Tile 3 */}
+          <div className="bg-zinc-950/80 p-8 flex flex-col items-center justify-center text-center">
+            <div className="text-4xl md:text-5xl font-black text-white mb-2"><Counter end={100} suffix="%" /></div>
+            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">Verified</div>
+          </div>
+          {/* Tile 4 */}
+          <div className="bg-zinc-950/80 p-8 flex flex-col items-center justify-center text-center">
+            <div className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400 mb-2">Instant</div>
+            <div className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">AI Match</div>
+          </div>
+        </div>
+        
+        {/* Safe Handover Badge */}
+        <div className="flex justify-center mt-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 backdrop-blur-sm">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+              Verified Safe Handover
+            </span>
           </div>
         </div>
       </div>
+
+      <CollegeMarquee />
+
+      <style>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }

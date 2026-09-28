@@ -11,12 +11,16 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import HeroSection from '../../components/ui/glassmorphism-trust-hero';
+import { CinematicFooter } from '../../components/ui/motion-footer';
+import { HeroScene } from '../../components/3d/HeroScene';
 
 export const LandingPage: React.FC = () => {
   const { navigate } = useRouter();
 
   return (
-    <div className="w-full flex flex-col items-center max-w-7xl mx-auto px-4 space-y-12 pb-12 font-sans">
+    <div className="w-full flex flex-col items-center overflow-x-hidden font-sans relative">
+      <HeroScene />
+      <div className="w-full max-w-7xl mx-auto px-4 space-y-12 pb-12 relative z-10">
       {/* Hero Section */}
       <HeroSection 
         onReportLost={() => navigate('/student/report-lost')}
@@ -172,6 +176,10 @@ export const LandingPage: React.FC = () => {
           </button>
         </div>
       </section>
+      </div>
+
+      {/* Cinematic Scroll-Reveal Footer */}
+      <CinematicFooter />
     </div>
   );
 };

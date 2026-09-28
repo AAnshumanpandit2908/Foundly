@@ -7,6 +7,11 @@ export const RoleSwitcherBanner: React.FC = () => {
   const { currentPath, navigate, perspective, setPerspective } = useRouter();
   const { user, profile, role, isConfigured } = useAuth();
 
+  const isDevUrl = typeof window !== 'undefined' && window.location.search.includes('dev=1');
+  if (role !== 'foundly_owner' && !isDevUrl) {
+    return null;
+  }
+
   return (
     <div className="bg-slate-900 text-slate-200 text-xs px-4 py-2 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
       <div className="flex flex-wrap items-center gap-2">

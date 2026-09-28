@@ -8,6 +8,13 @@ import { RoleSwitcherBanner } from './components/layout/RoleSwitcherBanner';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { PilotFeedbackModal } from './components/ui/PilotFeedbackModal';
+import { MessageSquarePlus } from 'lucide-react';
+import Lenis from '@studio-freight/lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Public pages
 import { LandingPage } from './pages/public/LandingPage';
@@ -50,6 +57,31 @@ import { OwnerPilotPage } from './pages/owner/OwnerPilotPage';
 
 const AppContent: React.FC = () => {
   const { currentPath, perspective } = useRouter();
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = React.useState(false);
+
+  // Setup Lenis smooth scroll and sync with GSAP
+  React.useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove(lenis.raf);
+    };
+  }, []);
 
   // Route dispatcher with role-based access control
   const renderCurrentView = () => {
@@ -291,7 +323,8 @@ const AppContent: React.FC = () => {
         </div>
       )}
 
-      {/* Footer */}
+      {/* Footer - hidden on landing page which has its own cinematic footer */}
+      {currentPath !== '/' && (
       <footer className="border-t border-slate-200/80 bg-white py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div className="flex items-center gap-2">
@@ -305,13 +338,28 @@ const AppContent: React.FC = () => {
           </div>
         </div>
       </footer>
+      )}
+
+      {/* Floating Pilot Feedback Trigger */}
+      <button
+        onClick={() => setIsFeedbackModalOpen(true)}
+        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-indigo-600/90 text-white hover:bg-indigo-500 hover:scale-110 transition-all shadow-[0_0_20px_rgba(99,102,241,0.4)] backdrop-blur-md"
+        title="Submit Pilot Feedback"
+      >
+        <MessageSquarePlus className="w-6 h-6" />
+      </button>
+
+      <PilotFeedbackModal 
+        isOpen={isFeedbackModalOpen} 
+        onClose={() => setIsFeedbackModalOpen(false)} 
+      />
     </div>
   );
 };
 
 export default function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
       <ToastProvider>
         <AuthProvider>
           <NotificationProvider>

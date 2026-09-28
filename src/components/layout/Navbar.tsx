@@ -20,7 +20,6 @@ import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
 import { Button } from '../ui/Button';
 import { PilotFeedbackModal } from '../ui/PilotFeedbackModal';
-import CinematicThemeSwitcher from '../ui/cinematic-theme-switcher';
 
 export const Navbar: React.FC = () => {
   const { currentPath, navigate, perspective, setPerspective } = useRouter();
@@ -77,7 +76,7 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={() => handleNav('/')}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                  currentPath === '/' ? 'text-indigo-600 bg-indigo-50/60' : 'text-slate-600 hover:text-slate-900'
+                  currentPath === '/' ? 'text-indigo-400 bg-indigo-900/30' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Home
@@ -85,18 +84,26 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={() => handleNav('/student/browse')}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                  currentPath === '/student/browse' ? 'text-indigo-600 bg-indigo-50/60' : 'text-slate-600 hover:text-slate-900'
+                  currentPath === '/student/browse' ? 'text-indigo-400 bg-indigo-900/30' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Find an Item
               </button>
               <button
-                onClick={() => handleNav('/admin-application')}
+                onClick={() => handleNav('/#how-it-works')}
                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
-                  currentPath === '/admin-application' ? 'text-indigo-600 bg-indigo-50/60' : 'text-slate-600 hover:text-slate-900'
+                  currentPath === '/#how-it-works' ? 'text-indigo-400 bg-indigo-900/30' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                College Admin Application
+                How It Works
+              </button>
+              <button
+                onClick={() => handleNav('/admin-application')}
+                className={`px-3 py-1.5 text-sm font-medium rounded-lg transition ${
+                  currentPath === '/admin-application' ? 'text-indigo-400 bg-indigo-900/30' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                For Colleges
               </button>
             </>
           )}
@@ -215,89 +222,7 @@ export const Navbar: React.FC = () => {
 
         {/* Right side controls */}
         <div className="flex items-center gap-2.5">
-          {/* Theme Toggle */}
-          <div className="hidden sm:block scale-[0.6] origin-right mr-1 -ml-2">
-            <CinematicThemeSwitcher />
-          </div>
-
-          {/* Pilot Feedback Trigger */}
-          <button
-            onClick={() => setIsFeedbackModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-indigo-200 bg-indigo-50/70 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition shadow-2xs"
-            title="Submit Pilot Feedback"
-          >
-            <MessageSquarePlus className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="hidden sm:inline">Pilot Feedback</span>
-          </button>
-
-          {/* Quick Perspective / Role Switcher for seamless Phase 1 evaluation */}
-          <div className="relative">
-            <button
-              onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
-              title="Switch role view for prototype evaluation"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-              <span className="hidden sm:inline">Role:</span>
-              <span className="font-semibold text-slate-900">
-                {perspective === 'PUBLIC'
-                  ? 'Visitor'
-                  : perspective === 'STUDENT'
-                  ? 'Student'
-                  : perspective === 'COLLEGE_ADMIN'
-                  ? 'College Admin'
-                  : 'Owner'}
-              </span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </button>
-
-            {isRoleDropdownOpen && (
-              <div 
-                className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-xl py-2 z-50 animate-in fade-in"
-                onClick={() => setIsRoleDropdownOpen(false)}
-              >
-                <div className="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                  Select UX Perspective
-                </div>
-                <button
-                  onClick={() => setPerspective('PUBLIC')}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left text-xs font-medium hover:bg-slate-50 ${
-                    perspective === 'PUBLIC' ? 'text-indigo-600 font-semibold bg-indigo-50/50' : 'text-slate-700'
-                  }`}
-                >
-                  <Compass className="w-4 h-4 text-slate-400" />
-                  <span>Public Landing / Visitor</span>
-                </button>
-                <button
-                  onClick={() => setPerspective('STUDENT')}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left text-xs font-medium hover:bg-slate-50 ${
-                    perspective === 'STUDENT' ? 'text-indigo-600 font-semibold bg-indigo-50/50' : 'text-slate-700'
-                  }`}
-                >
-                  <GraduationCap className="w-4 h-4 text-indigo-500" />
-                  <span>Student View (/student)</span>
-                </button>
-                <button
-                  onClick={() => setPerspective('COLLEGE_ADMIN')}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left text-xs font-medium hover:bg-slate-50 ${
-                    perspective === 'COLLEGE_ADMIN' ? 'text-indigo-600 font-semibold bg-indigo-50/50' : 'text-slate-700'
-                  }`}
-                >
-                  <Building2 className="w-4 h-4 text-amber-500" />
-                  <span>College Admin View (/admin)</span>
-                </button>
-                <button
-                  onClick={() => setPerspective('FOUNDLY_OWNER')}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left text-xs font-medium hover:bg-slate-50 ${
-                    perspective === 'FOUNDLY_OWNER' ? 'text-indigo-600 font-semibold bg-indigo-50/50' : 'text-slate-700'
-                  }`}
-                >
-                  <ShieldCheck className="w-4 h-4 text-purple-500" />
-                  <span>Foundly Owner View (/owner)</span>
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Quick Perspective / Role Switcher moved to profile dropdown area or hidden for visitors */}
 
           {/* Primary Action Buttons depending on auth state & role */}
           {user ? (
@@ -454,21 +379,20 @@ export const Navbar: React.FC = () => {
               </Button>
             </div>
           ) : isPublic ? (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
+            <div className="flex items-center gap-3">
+              <button
                 onClick={() => handleNav('/login')}
+                className="text-sm font-medium text-slate-300 hover:text-white transition-colors px-2"
               >
                 Log In
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
+              </button>
+              <button
                 onClick={() => handleNav('/signup')}
+                className="relative group px-4 py-2 text-sm font-bold text-white bg-indigo-600 rounded-full transition-all hover:bg-indigo-500 hover:shadow-[0_0_20px_rgba(99,102,241,0.6)]"
               >
                 Sign Up
-              </Button>
+                <div className="absolute inset-0 rounded-full bg-indigo-400 blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
+              </button>
             </div>
           ) : isStudent ? (
             <div className="flex items-center gap-2">
